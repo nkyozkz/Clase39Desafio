@@ -12,9 +12,11 @@ import initializePassport from "./config/passportConfig.js";
 import MongoConnection from "./mongoSingleton.js";
 import { socketServer } from "./config/socket.js";
 import { addLogger } from "./services/logger/logger.js";
+import swaggerConfig from "./services/swagger/swaggerConfig.js"
 
 dotenv.config();
 const app = express();
+app.use("/apidocs", swaggerConfig.serve, swaggerConfig.setup);
 
 initializePassport();
 

@@ -8,7 +8,7 @@ const router = Router();
 router.put("/:uid", authToken, async (req, res) => {
   let { uid } = req.params;
   if (req.user._id == uid) {
-    await fetch("http://localhost:8080/api/sessions/premium", {
+    await fetch(`${process.env.DOMAIN_NAME}/api/sessions/premium`, {
       method: "PUT",
       headers: {
         token: process.env.ADMIN_ADD_PRODUCT_TOKEN,

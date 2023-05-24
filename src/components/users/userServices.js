@@ -17,6 +17,6 @@ export class UsersServices {
     return this.userModel.updateUser(email, nuevaInformacion);
   };
   searchUserByCartId = (id) => {
-    return this.userModel.updateUser(id);
+    return this.userModel.searchUserByCartId(id);
   };
 }

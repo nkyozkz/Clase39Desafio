@@ -44,7 +44,7 @@ router.get("/:cid", async (req, res, next) => {
   }
 });
 
-//* Actualizar carrito
+//* Agregar producto a carrito
 router.post("/:cid/products/:pid", async (req, res, next) => {
   try {
     const result = await controller.addProductToCart(req);
@@ -53,6 +53,7 @@ router.post("/:cid/products/:pid", async (req, res, next) => {
     }
     return res.status(400).send(result.payload.result);
   } catch (error) {
+    console.log(error)
     next(error);
   }
 });

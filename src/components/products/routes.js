@@ -45,7 +45,7 @@ router.post(
 //* Traer Productos con un id
 router.get("/:pid", async (req, res, next) => {
   try {
-    let result = await Controller.getProductWhitId(req);
+    let result = await Controller.getProductWhitId(req.params.pid);
     if (result.status == 200) {
       return res.status(200).send(result.response);
     } else {
@@ -57,7 +57,7 @@ router.get("/:pid", async (req, res, next) => {
 });
 
 //*Actualizar productos
-router.put("/:pid", authorization("admin"), async (req, res, next) => {
+router.put("/:pid", authorization("admin","premium"), async (req, res, next) => {
   try {
     let result = await Controller.updateProducts(req);
     if (result.status == 200) {

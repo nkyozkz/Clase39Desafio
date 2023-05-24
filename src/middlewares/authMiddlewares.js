@@ -85,7 +85,7 @@ export const extractCookie = (req) =>
 export const authorization = (...roles) => {
   return async (req, res, next) => {
     let token = req.headers.token;
-    fetch("http://localhost:8080/api/sessions/current", {
+    fetch(`${process.env.DOMAIN_NAME}/api/sessions/current`, {
       headers: {
         "Content-Type": "application/json",
         token: token,

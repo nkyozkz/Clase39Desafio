@@ -19,7 +19,8 @@ export class CartController {
     return this.cartService.createCart();
   };
   seeOneCart = async (req) => {
-    let id = req.params.cid;
+    console.log(req)
+    let id = req.params.cid || req;
     let verificacion = await confirmarCarrito(id);
     if (verificacion) {
       return this.cartService.getOneCart(id);
@@ -40,17 +41,21 @@ export class CartController {
     }
   };
   addProductToCart = async (req) => {
-    let carritoId = req.params.cid;
-    let productoId = req.params.pid;
+    let carritoId = await req.params.cid;
+    let productoId = await req.params.pid;
     let verificarProducto = await confirmarProducto(productoId);
     let verificarCarrito = await confirmarCarrito(carritoId);
     if (verificarCarrito && verificarProducto) {
-      let cartOwner = await getOwnerCart(carritoId);
+      let cartOwner = await getOwnerCart(req);
       let productOwner = await getOwnerProduct(productoId);
-      console.log(cartOwner);
-      console.log(productOwner);
-
-      // return this.cartService.addProduct(productoId, carritoId);
+      if (cartOwner != productOwner) {
+        return this.cartService.addProduct(productoId, carritoId);
+      } else {
+        return {
+          status: 400,
+          response: "Solo puedes agregar productos que no son tuyos",
+        };
+      }
     } else {
       return {
         status: 400,

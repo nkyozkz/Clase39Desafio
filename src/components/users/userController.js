@@ -17,6 +17,6 @@ export class UserController {
     return this.userService.updateUser(email, nuevaInformacion);
   };
   searchUserByCartId = (id) => {
-    return this.userModel.updateUser(id);
+    return this.userService.searchUserByCartId(id);
   };
 }

@@ -14,10 +14,12 @@ export let confirmarCarrito = async (id) => {
 };
 
 export let getOwnerCart = async (id) => {
-  let cartController = new CartController();
-  let carrito = await cartController.seeOneCart(id);
   let userController = new UserController();
-  let owner = userController.searchUserByCartId(carrito._id);
+  let owner = await userController.searchUserByCartId(id);
   return owner.email;
 };
-export let getOwnerProduct = async (id) => {};
+export let getOwnerProduct = async (id) => {
+  let productsController = new ProductsController();
+  let owner = await productsController.getProductWhitId(id);
+  return owner.response[0].owner;
+};

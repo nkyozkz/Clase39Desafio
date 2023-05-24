@@ -13,7 +13,7 @@ export let socketServer = (app) => {
   const io = new Server(httpServer);
   io.on(`connection`, async (socket) => {
     let messagesController = new MessagesController();
-    fetch("http://localhost:8080/api/products")
+    fetch(`${process.env.DOMAIN_NAME}/api/products`)
       .then((data) => data.json())
       .then((res) => res.payload||res)
       .then((datos) => {

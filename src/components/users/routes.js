@@ -88,7 +88,7 @@ router.get("/updatePassword", async (req, res) => {
       subject: "Restablecimiento de contraseña",
       html: `
               <div>
-                  <h2>Para restablecer su contraseña <a href="http://localhost:8080/api/sessions/changePassword/${token}" target="_blank">Clik aqui</a></h2>
+                  <h2>Para restablecer su contraseña <a href="${process.env.DOMAIN_NAME}/api/sessions/changePassword/${token}" target="_blank">Clik aqui</a></h2>
               </div>
           `,
       attachments: [],
@@ -109,7 +109,13 @@ router.get("/changePassword/:token", authPasswordToken, async (req, res) => {
   let { contraseña } = req.body;
   if (contraseña) {
     let user = await userController.searchUser(req.user.response);
-    console.log(req.user.response)
+    if (!user) {
+      return res
+        .status(400)
+        .send(
+          `Usuario no encontrado`
+        );
+    }
     if (isValidPassword(user, contraseña)) {
       return res
         .status(422)
@@ -131,6 +137,12 @@ router.get("/changePassword/:token", authPasswordToken, async (req, res) => {
 
 router.put("/premium", authorization("admin"), async (req, res) => {
   let user = await userController.searchUserById(req.headers.updateuser);
+  if (!user) {
+    return res.status(400).send({
+      status: 400,
+      response: "Los administradores no pueden cambiar su rol",
+    });
+  }
   if (user.rol == "user") {
     let result = await userController.updateUser(user.email, {
       rol: "premium",

@@ -3,7 +3,7 @@ import { cartsSchema } from "./cartSchema.js";
 import { transport } from "../../../../services/email/nodemailer.js";
 const cartsCollection = "carts";
 import dotenv from "dotenv";
-dotenv.config;
+dotenv.config();
 let model = mongoose.model(cartsCollection, cartsSchema);
 
 export class CartsModel {
@@ -80,7 +80,7 @@ export class CartsModel {
         status: 200,
         payload: {
           result: "success",
-          response: { status: "Actualizado Correctamente" },
+          response: { status: "Agregado correctamente" },
         },
       };
     }
@@ -173,7 +173,7 @@ export class CartsModel {
   };
   buyProducts = async (user) => {
     //* LLAMAMOS AL CARRITO
-    let cart = await fetch(`http://localhost:8080/api/carts/${user.cart}`)
+    let cart = await fetch(`${process.env.DOMAIN_NAME}/api/carts/${user.cart}`)
       .then((res) => res.json())
       .then((data) => data[0]);
     //* Verificamos si tiene productos
@@ -203,7 +203,7 @@ export class CartsModel {
         stock: buyProducts._id.stock - buyProducts.quantity,
       });
 
-      await fetch(`http://localhost:8080/api/products/${buyProducts._id._id}`, {
+      await fetch(`${process.env.DOMAIN_NAME}/api/products/${buyProducts._id._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -222,14 +222,14 @@ export class CartsModel {
           }
         });
       await fetch(
-        `http://localhost:8080/api/carts/${user.cart}/products/${buyProducts._id._id}`,
+        `${process.env.DOMAIN_NAME}/api/carts/${user.cart}/products/${buyProducts._id._id}`,
         {
           method: "DELETE",
         }
       ).then(res=>res.json()).then(res=>console.log(res));
     }
     let generarTicket = JSON.stringify({ amount: amount, email: user.email });
-    await fetch("http://localhost:8080/api/ticket", {
+    await fetch(`${process.env.DOMAIN_NAME}/api/ticket`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -243,7 +243,7 @@ export class CartsModel {
         let fecha = res.response.purchase_datatime.split("T");
 
         transport.sendMail({
-          from: "nalvcodertesting@gmail.com",
+          from: process.env.GMAIL_USER,
           to: res.response.purchaser,
           subject: "Compra en SportStore",
           html: `

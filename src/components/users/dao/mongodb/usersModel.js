@@ -17,7 +17,6 @@ export class UsersModel {
     return await this.db.create(user);
   };
   searchUser = async (email) => {
-    console.log(email)
     return await this.db.findOne({ email: email });
   };
   searchUserById = async (id) => {

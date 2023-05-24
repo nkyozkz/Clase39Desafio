@@ -18,8 +18,7 @@ export class ProductsController {
   addProduct = (req) => {
     return this.productsServices.addProduct(req);
   };
-  getProductWhitId = (req) => {
-    let id = req.params.pid;
+  getProductWhitId = (id) => {
     if (mongoose.Types.ObjectId.isValid(id)) {
       return this.productsServices.getProductsWithId(id);
     }
@@ -50,9 +49,9 @@ export class ProductsController {
         return await this.productsServices.deleteProducts(idEliminar);
       }
       let producto = await this.productsServices.getProductsWithId(idEliminar);
-      if(producto.response[0].owner==req.owner){
+      if (producto.response[0].owner == req.owner) {
         return await this.productsServices.deleteProducts(idEliminar);
-      }else{
+      } else {
         return {
           status: 400,
           response: "No puedes eliminar un producto que no es tuyo",

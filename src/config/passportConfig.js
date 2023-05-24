@@ -152,12 +152,9 @@ const initializePassport = () => {
             };
             userNew = asignarRol;
           }
-
-          let carrito = cartController.createCart();
           const hashUser = {
             ...userNew,
             social: "local",
-            cart: carrito._id,
             password: createHash(userNew.password),
           };
           const result = await userController.createUser(hashUser);
